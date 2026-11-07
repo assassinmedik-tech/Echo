@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#070a0e" />
+<title>Echoes of the Fallen</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23090d12'/%3E%3Cpath d='M16 4 24 16 16 28 8 16Z' fill='none' stroke='%23e3c07c' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%236be0cf'/%3E%3C/svg%3E" />
+</head>
+<body>
+<div id="app">
+  <canvas id="game" aria-label="Echoes of the Fallen game canvas"></canvas>
+
+  <div id="grade"></div>
+  <div id="vignette"></div>
+  <div id="hurtFlash"></div>
+  <div id="fade"></div>
+
+  <div id="hud" class="hidden">
+    <div id="minimapWrap">
+      <canvas id="minimap" width="180" height="180"></canvas>
+      <div id="regionLabel">Greenfall Forest</div>
+      <div id="mapHint"><kbd>M</kbd> map</div>
+    </div>
+
+    <div id="objective">
+      <div class="obj-label"><span class="diamond"></span> <span id="objQuest">Main Quest</span></div>
+      <div id="objText">Speak with Elder Maelin</div>
+    </div>
+
+    <div id="vitals">
+      <div id="levelMedal"><span id="levelNum">1</span><small>LVL</small></div>
+      <div id="barStack">
+        <div class="bar hp"><i class="fill" id="hpFill"></i><span class="bar-txt" id="hpTxt">100 / 100</span></div>
+        <div class="bar energy"><i class="fill" id="enFill"></i><span class="bar-txt" id="enTxt">100</span></div>
+        <div class="bar stam"><i class="fill" id="stFill"></i></div>
+        <div id="xpTrack"><i id="xpFill"></i></div>
+      </div>
+    </div>
+
+    <div id="abilities"></div>
+
+    <div id="bossbar" class="hidden">
+      <div id="bossName">The Grove Warden</div>
+      <div class="boss-track"><i id="bossFill"></i><div class="boss-segs"></div></div>
+      <div id="bossPhase">GUARDIAN OF THE GREENFALL</div>
+    </div>
+
+    <div id="toasts"></div>
+    <div id="interactPrompt" class="hidden"><kbd>E</kbd><span id="interactText">Interact</span></div>
+    <div id="perfStats"></div>
+  </div>
+
+  <div id="touch" class="hidden">
+    <div id="stickZone">
+      <div id="stickBase"><div id="stickKnob"></div></div>
+    </div>
+    <div id="touchButtons">
+      <div class="tbtn big" data-act="attack">⚔<span>ATK</span></div>
+      <div class="tbtn" data-act="dodge">✦<span>DODGE</span></div>
+      <div class="tbtn" data-act="interact">✋<span>USE</span></div>
+      <div class="tbtn ab" data-act="burst" data-ability="burst">1</div>
+      <div class="tbtn ab" data-act="blink" data-ability="blink">2</div>
+      <div class="tbtn ab" data-act="nova" data-ability="nova">3</div>
+      <div class="tbtn ab" data-act="frost" data-ability="frost">4</div>
+    </div>
+    <div id="touchTop">
+      <div class="tmini" data-act="inventory">▥</div>
+      <div class="tmini" data-act="map">◈</div>
+      <div class="tmini" data-act="pause">≡</div>
+    </div>
+  </div>
+
+  <div id="dialogueWrap" class="hidden">
+    <div id="dialogueBox">
+      <div id="dlgPortrait"></div>
+      <div id="dlgMain">
+        <div id="dlgName">Elder Maelin</div>
+        <div id="dlgText"></div>
+        <div id="dlgChoices"></div>
+      </div>
+      <div id="dlgHint">E · continue</div>
+    </div>
+  </div>
+
+  <div id="overlayWrap" class="hidden">
+    <div id="overlay"></div>
+  </div>
+
+  <div id="regionBanner">
+    <div class="rb-rule"></div>
+    <div class="rb-small">THE WORLD OF AETHERIA</div>
+    <div id="regionName">Greenfall Forest</div>
+    <div id="regionSub">Where the old roots remember</div>
+    <div class="rb-rule"></div>
+  </div>
+
+  <div id="titleScreen">
+    <div id="titleTop">
+      <div class="title-kicker">A TALE OF THE SHATTERED WORLD</div>
+      <h1>ECHOES<span class="title-small">of the</span>FALLEN</h1>
+      <div class="title-line"></div>
+      <div id="titleMenu">
+        <button class="menu-btn" data-title="continue" id="btnContinue">CONTINUE <span class="mb-sub">Journey onward</span></button>
+        <button class="menu-btn" data-title="new" id="btnNew">NEW JOURNEY <span class="mb-sub">Begin at the Sanctuary</span></button>
+        <button class="menu-btn" data-title="settings">SETTINGS <span class="mb-sub">Audio · Graphics · Controls</span></button>
+        <button class="menu-btn" data-title="controls">HOW TO PLAY <span class="mb-sub">Combat · Exploration</span></button>
+      </div>
+    </div>
+    <div id="titleFooter">
+      <span>Explore Aetheria · Restore the echo</span>
+      <span class="tf-right">v.1.0 · autosaves locally</span>
+    </div>
+  </div>
+
+  <div id="loading">
+    <div class="load-mark"></div>
+    <div class="load-title">ECHOES OF THE FALLEN</div>
+    <div class="load-bar"><i id="loadFill"></i></div>
+    <div id="loadText">Weaving the echoes…</div>
+  </div>
+
+  <div id="rotateHint" class="hidden"><div>↻</div><p>Turn your device sideways for the widest view of Aetheria</p></div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
